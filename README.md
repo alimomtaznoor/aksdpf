@@ -147,13 +147,16 @@ The assignment requires a deployed application. A possible deployment approach i
 4. Configure `VITE_API_BASE_URL` to point to the deployed backend API, including `/api`, if required by the frontend configuration.
 5. Test the deployed application, including API requests, forecast cutoff selection, and displayed metrics.
 
-**Live app:** Add the deployed URL after deployment and verification.
+## Live deployment
 
-Do not submit a placeholder URL as a working deployment.
+- **WindLens dashboard:** https://windlens-sigma.vercel.app/
+- **Backend health check:** https://windlens-api.vercel.app/api/health
+- **Interactive API documentation:** https://windlens-api.vercel.app/docs
 
-## AI-tool disclosure
+The frontend is deployed on Vercel as a React/Vite application. The backend is deployed separately as a FastAPI service. The frontend uses `VITE_API_BASE_URL` to connect to the backend, and the backend uses `CORS_ORIGINS` to allow requests from the deployed frontend origin.
 
-AI assistance was used to help scaffold and review parts of this application. The applicant should review and test the code, calculations, data-source behavior, deployment configuration, and claims before submission.
+The backend retrieves national wind-generation actuals and forecasts from Elexon BMRS. Forecast accuracy is evaluated using matched hourly data for January 2026. This prototype supports decision-making but does not calculate total electricity procurement requirements.
+
 
 ## Data attribution
 
