@@ -54,6 +54,76 @@ function AppSidebar({ tab, onTabChange }: { tab: DashboardTab; onTabChange: (tab
   );
 }
 
+
+const CUTOFF_OPTIONS = ['08:00', '09:00', '10:00', '11:00', '12:00'];
+
+function CutoffSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div
+      className={`cutoff-select ${open ? 'is-open' : ''}`}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setOpen(false);
+        }
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') setOpen(false);
+      }}
+    >
+      <button
+        type="button"
+        className="cutoff-trigger"
+        aria-label="Choose day-ahead cutoff"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+      >
+        <Clock3 size={16} className="cutoff-clock" />
+        <span className="cutoff-value">{value} UK time</span>
+        <ChevronDown
+          size={16}
+          className={`cutoff-chevron ${open ? 'rotated' : ''}`}
+        />
+      </button>
+
+      {open && (
+        <div className="cutoff-menu" role="listbox" aria-label="Day-ahead cutoff">
+          <div className="cutoff-menu-heading">DECISION CUTOFF</div>
+          {CUTOFF_OPTIONS.map((option) => (
+            <button
+              key={option}
+              type="button"
+              role="option"
+              aria-selected={value === option}
+              className={`cutoff-option ${value === option ? 'selected' : ''}`}
+              onClick={() => {
+                onChange(option);
+                setOpen(false);
+              }}
+            >
+              <span>{option}</span>
+              <span className="cutoff-option-time">UK time</span>
+              {value === option && <CheckCircle2 size={15} />}
+            </button>
+          ))}
+          <div className="cutoff-menu-footnote">
+            Applied to forecasts published on the previous day.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 function AnalysisControls({ month, cutoff, onMonthChange, onCutoffChange, onRefresh, loading }: {
   month: string;
   cutoff: string;
@@ -67,7 +137,10 @@ function AnalysisControls({ month, cutoff, onMonthChange, onCutoffChange, onRefr
       <div className="control-title"><span className="control-title-icon"><CalendarDays size={16} /></span><div><strong id="analysis-settings-title">Analysis settings</strong><span>Choose the delivery month and decision cutoff</span></div></div>
       <div className="controls">
         <label>DELIVERY MONTH<div className="select-wrap"><CalendarDays size={15} /><input type="month" value={month} onChange={(event) => onMonthChange(event.target.value)} min="2020-01" max="2026-12" /></div></label>
-        <label>DAY-AHEAD CUTOFF<div className="select-wrap"><Clock3 size={15} /><select value={cutoff} onChange={(event) => onCutoffChange(event.target.value)}><option value="08:00">08:00 UK time</option><option value="09:00">09:00 UK time</option><option value="10:00">10:00 UK time</option><option value="11:00">11:00 UK time</option><option value="12:00">12:00 UK time</option></select><ChevronDown size={14} /></div></label>
+       <label>
+  DAY-AHEAD CUTOFF
+  <CutoffSelect value={cutoff} onChange={onCutoffChange} />
+</label>
         <button className="btn btn-dark" type="button" onClick={onRefresh} disabled={loading}><RefreshCw size={14} className={loading ? 'spin' : ''} />Refresh analysis</button>
       </div>
       <div className="assumption-note"><AlertTriangle size={14} />Cutoff is a configurable pilot assumption. Confirm the actual decision time with the trading team before operational use.</div>

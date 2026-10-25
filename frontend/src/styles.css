@@ -199,3 +199,188 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   .page-footer { flex-direction: column; }
   .method-meta { gap: 8px; flex-direction: column; }
 }
+
+
+/* Keep the Analysis settings icon centered and independent of text styles */
+.control-title > .control-title-icon {
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  flex: 0 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border-radius: 7px;
+  background: #e8f1ed;
+  color: #286e61;
+  line-height: 1;
+}
+
+.control-title > .control-title-icon svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+/* Restrict the subtitle styles to the text beside the icon */
+.control-title > div span {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+  color: #87938d;
+}
+
+/* Custom day-ahead cutoff dropdown */
+.cutoff-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  z-index: 5;
+}
+
+.cutoff-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #dce3de;
+  border-radius: 7px;
+  background: #fff;
+  color: #34453e;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease,
+    background 150ms ease;
+}
+
+.cutoff-trigger:hover,
+.cutoff-select.is-open .cutoff-trigger {
+  border-color: #7eafa2;
+  background: #fcfefd;
+}
+
+.cutoff-trigger:focus-visible {
+  outline: 2px solid #5b9e91;
+  outline-offset: 2px;
+}
+
+.cutoff-clock {
+  flex: 0 0 auto;
+  color: #71877e;
+}
+
+.cutoff-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #34453e;
+}
+
+.cutoff-chevron {
+  flex: 0 0 auto;
+  color: #75867e;
+  transition: transform 160ms ease;
+}
+
+.cutoff-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.cutoff-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  overflow: hidden;
+  padding: 6px;
+  border: 1px solid #dfe8e2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 14px 35px rgba(24, 48, 39, 0.14),
+    0 3px 8px rgba(24, 48, 39, 0.06);
+  animation: cutoff-menu-in 140ms ease-out;
+}
+
+.cutoff-menu-heading {
+  padding: 9px 10px 8px;
+  color: #87938d;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.cutoff-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 39px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #40534a;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cutoff-option > span:first-child {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cutoff-option .cutoff-option-time {
+  flex: 1;
+  font-size: 10px;
+  font-weight: 400;
+  color: #89958f;
+}
+
+.cutoff-option > svg {
+  color: #176d62;
+}
+
+.cutoff-option:hover {
+  background: #f2f7f4;
+}
+
+.cutoff-option.selected {
+  background: #eaf4ef;
+  color: #176d62;
+}
+
+.cutoff-menu-footnote {
+  margin-top: 5px;
+  padding: 10px 9px 7px;
+  border-top: 1px solid #edf1ed;
+  color: #87938d;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+@keyframes cutoff-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cutoff-menu,
+  .cutoff-chevron,
+  .cutoff-trigger {
+    animation: none;
+    transition: none;
+  }
+}
