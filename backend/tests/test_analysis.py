@@ -12,16 +12,40 @@ def test_forecast_selects_latest_before_cutoff():
     assert list(result.values()) == [110.0]
 
 
+
 def test_metrics_and_wind_filter():
     actuals = [
-        {"startTime": "2026-01-02T12:00:00Z", "fuelType": "WIND", "generation": 100},
-        {"startTime": "2026-01-02T12:30:00Z", "fuelType": "GAS", "generation": 500},
+        {
+            "startTime": "2026-01-02T12:00:00Z",
+            "fuelType": "WIND",
+            "generation": 100,
+        },
+        {
+            "startTime": "2026-01-02T12:30:00Z",
+            "fuelType": "WIND",
+            "generation": 120,
+        },
+        {
+            "startTime": "2026-01-02T12:30:00Z",
+            "fuelType": "GAS",
+            "generation": 500,
+        },
     ]
+
     forecasts = [
-        {"startTime": "2026-01-02T12:00:00Z", "publishTime": "2026-01-01T09:00:00Z", "generation": 110},
+        {
+            "startTime": "2026-01-02T12:00:00Z",
+            "publishTime": "2026-01-01T09:00:00Z",
+            "generation": 110,
+        },
     ]
+
     result = build_analysis(actuals, forecasts)
+
     assert result["actualIntervals"] == 1
+    assert result["forecastIntervals"] == 1
     assert result["matchedIntervals"] == 1
-    assert result["metrics"]["maeMW"] == 10.0
-    assert result["metrics"]["biasMW"] == 10.0
+    assert result["points"][0]["actualMW"] == 110
+    assert result["points"][0]["forecastMW"] == 110
+    assert result["metrics"]["maeMW"] == 0
+
